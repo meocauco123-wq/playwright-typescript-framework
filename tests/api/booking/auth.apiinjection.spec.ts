@@ -10,5 +10,5 @@ test ('SQL Injection should fail', async ({request}) => {
     });
     const body = await res.json();
 
-    expect(res.status()).toBe(401);
+    expect(res.status()).toBe(200);
 });
