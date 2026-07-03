@@ -17,7 +17,7 @@ export default defineConfig({
 
   fullyParallel: true,
 
-  retries: 1,
+  retries: process.env.CI ? 2 : 1,
 
   workers: process.env.CI ? 2 : undefined,
 
@@ -27,52 +27,47 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: process.env.BASE_URL,
+    // Fallback khi không có .env
+    baseURL: process.env.BASE_URL || 'https://www.saucedemo.com',
 
-    headless: false,
+    // CI luôn chạy headless
+    headless: !!process.env.CI,
 
     trace: 'retain-on-failure',
-
     screenshot: 'only-on-failure',
-
     video: 'retain-on-failure',
 
     actionTimeout: 10000,
-
     navigationTimeout: 15000,
   },
 
   projects: [
-    // UI Testing
+    // UI - Chrome
     {
       name: 'chromium',
-
       use: {
         ...devices['Desktop Chrome'],
       },
-
       testMatch: ['tests/e2e/**/*.spec.ts'],
     },
 
-    // Firefox
+    // UI - Firefox
     {
       name: 'firefox',
-
       use: {
         ...devices['Desktop Firefox'],
       },
-
       testMatch: ['tests/e2e/**/*.spec.ts'],
     },
 
-    // API Testing
+    // API
     {
       name: 'api',
-
       testMatch: ['tests/api/**/*.spec.ts'],
-
       use: {
-        baseURL: process.env.API_URL,
+        baseURL:
+          process.env.API_URL ||
+          'https://restful-booker.herokuapp.com',
       },
     },
   ],
