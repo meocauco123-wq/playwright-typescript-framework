@@ -20,5 +20,13 @@ export const users = {
   missingpassword: {
     username: 'standard_user',
     password: ''
+  },
+  missingfirstname: {
+    username: '',
+    password: 'secret_sauce'
+  },
+  missinglastname: {
+    username: 'standard_user',
+    password: ''
   }
 };
